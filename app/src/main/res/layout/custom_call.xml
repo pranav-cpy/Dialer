@@ -8,30 +8,37 @@
        android:layout_height="wrap_content">
 
        <ImageView
+           android:layout_width="60dp"
+           android:layout_height="60dp"
+           android:padding="3dp"
+           android:src="@drawable/user"
+           android:scaleType="fitCenter"/>
+       <LinearLayout
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:src=""/>
+           android:orientation="vertical">
     <TextView
         android:text="TextView"
         android:textColor="#000000"
         android:textStyle="bold"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="17dp"
         android:layout_marginTop="5dp"
-        android:id="@+id/textView_book" />
+        android:id="@+id/textView_name" />
 
     <TextView
         android:text="TextView"
         android:textStyle="italic"
         android:textSize="20sp"
-        android:layout_marginLeft="29dp"
+        android:layout_marginLeft="17dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView_book"
 
-        android:id="@+id/textView_author" />
+        android:id="@+id/textView_provider" />
+           </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
