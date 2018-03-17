@@ -3,11 +3,13 @@ package com.team.pranav.dialer;
 //import com.team.pranav.R;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,11 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    final String URL="http://192.168.43.208:3010/";
+    final String URL="http://192.168.43.127:8080/";
     String group,location,volume;
-    int mainoption,tempvalue=0;
-    SharedPreferences settings = getSharedPreferences(MainActivity.prefs, 0);
-    String phoneno=settings.getString("number","");
+    long mainoption, tempvalue=0;
 
 
     Button b0,b1,b2,b3,b4,b5,b6,b7,b8,b9,change,enterbtn;
@@ -44,20 +44,12 @@ public class MainActivity extends AppCompatActivity {
     TextView number;
     String str="",string;
     ImageButton imgbtn;
-    TextToSpeech tts;
-    int result,no=0;
+    int result;long no;
     public static final String prefs = "myprefsfile";
     String[] name1={"Mom","Anjali","Sidhin","Hadeeb","Bineeth","Arathy"};
-    String[] provider1={"jio","idea","idea","jio","jio","idea"};
 
-    public void voice(String str) {
-        if (result == TextToSpeech.LANG_NOT_SUPPORTED || result == TextToSpeech.LANG_MISSING_DATA) {
-            Toast.makeText(getApplicationContext(), "Feature not supported in your device", Toast.LENGTH_SHORT).show();
-        } else {
-            tts.speak(str, TextToSpeech.QUEUE_FLUSH, null);
+    int startzero;
 
-        }
-    }
 
 
 
@@ -84,23 +76,28 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences settings = getSharedPreferences(MainActivity.prefs, 0);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString("number","8606851382");
+        editor.putString("phonenumber","8606851382");
         editor.apply();
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 no=no/10;
                 tempvalue=no;
-                number.setText(no);
+                if(no==0)
+                    startzero=1;
+                number.setText(""+no);
             }
         });
 
         b0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                no=0;
+                no=no*10;
                 tempvalue=no;
-                number.setText(no);
+                if(startzero==1)
+                number.setText(0+""+no);
+                else
+                    number.setText(""+no);
             }
         });
         b1.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +105,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 no=no*10+1;
                 tempvalue=no;
-                number.setText(no);
+                if(startzero==1)
+                    number.setText(0+""+no);
+                else
+                    number.setText(""+no);
             }
         });
         b2.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +116,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 no=no*10+2;
                 tempvalue=no;
-                number.setText(no);
+                if(startzero==1)
+                    number.setText(0+""+no);
+                else
+                    number.setText(""+no);
             }
         });
         b3.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 no=no*10+3;
                 tempvalue=no;
-                number.setText(no);
+                    number.setText(""+no);
             }
         });
         b4.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +135,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 no=no*10+4;
                 tempvalue=no;
-                number.setText(no);
+
+                    number.setText(""+no);
             }
         });
         b5.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +144,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 no=no*10+5;
                 tempvalue=no;
-                number.setText(no);
+
+                    number.setText(""+no);
             }
         });
         b6.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 no=no*10+6;
                 tempvalue=no;
-                number.setText(no);
+
+                    number.setText(""+no);
             }
         });
         b7.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +162,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 no=no*10+7;
                 tempvalue=no;
-                number.setText(no);
+
+                    number.setText(""+no);
             }
         });
         b8.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +171,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 no=no*10+8;
                 tempvalue=no;
-                number.setText(no);
+
+                    number.setText(""+no);
             }
         });
         b9.setOnClickListener(new View.OnClickListener() {
@@ -172,13 +180,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 no=no*10+9;
                 tempvalue=no;
-                number.setText(no);
+
+                    number.setText(""+no);
             }
         });
         imgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                voiceoutput();
+                startActivity(new Intent(MainActivity.this, Call.class));
+
             }
 
 
@@ -189,9 +199,10 @@ public class MainActivity extends AppCompatActivity {
                  string = number.getText().toString();
                 SharedPreferences settings = getSharedPreferences(MainActivity.prefs, 0);
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putString("number",string);
+                editor.putString("phonenumber",string);
                 editor.apply();
-                return false;
+                Toast.makeText(getApplicationContext(),"number updated",Toast.LENGTH_SHORT).show();
+                return true;
             }
         });
          enterbtn.setOnClickListener(new View.OnClickListener() {
@@ -205,144 +216,8 @@ public class MainActivity extends AppCompatActivity {
         CustomAdapter customadapter = new CustomAdapter(this);
         listview.setAdapter(customadapter);
 
-        tts = new TextToSpeech(MainActivity.this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    result = tts.setLanguage(Locale.UK);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Feature not supported in your device", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-
 
     }
-     public int input(){
-         return tempvalue;
-
-
-     }
-    public void voiceoutput(){
-        JSONObject jsonobj=new JSONObject();
-        if(result==TextToSpeech.LANG_NOT_SUPPORTED||result==TextToSpeech.LANG_MISSING_DATA) {
-            Toast.makeText(getApplicationContext(),"Feature not supported in your device",Toast.LENGTH_SHORT).show();
-        }else {
-            tts.speak("Welcome to blood donor finder. Press one for request, presss two for blood donation, press 3 for giving feedback followed by #", TextToSpeech.QUEUE_FLUSH,null);
-            mainoption=input();
-
-            if(mainoption==1){
-                tts.speak("Press 1 for A positive, press 2 for A negative, press 3 for b positive, press 4 for b negative, press 5 for o positive, press 6 for o negative followed by #", TextToSpeech.QUEUE_FLUSH,null);
-                group=String.valueOf(input());
-                try{
-                if(group.equals("1"))
-                    jsonobj.put("group","A+");
-                else if(group.equals("2"))
-                    jsonobj.put("group","A-");
-                else if(group.equals("3"))
-                    jsonobj.put("group","B+");
-                else if(group.equals("4"))
-                    jsonobj.put("group","B-");
-               else if(group.equals("5"))
-                    jsonobj.put("group","O+");
-                else if(group.equals("6"))
-                    jsonobj.put("group","O-");
-                }catch (JSONException e){}
-
-                tts.speak("press 1 for trivandrum, press 2 for kollam , press 3 for pathanamthitta, press 4 for alappuzha, press 5 for kottayam, press 6 idukki, press 7 for ernamkulam, press 8 for thrissur, press 9 for palakkad, press 10 for malappuram, press 11 for kozhikkod, press 12 for wayanad, press 13 for kannur, press 14 for kasargod followed by # ", TextToSpeech.QUEUE_FLUSH,null);
-                location=String.valueOf(input());
-                try {
-                    if (location.equals("1"))
-                        jsonobj.put("location", "TV");
-                    else if (location.equals("1"))
-                        jsonobj.put("location", "KL");
-                    else if (location.equals("1"))
-                        jsonobj.put("location", "PT");
-                    else if (location.equals("1"))
-                        jsonobj.put("location", "AL");
-                    else if (location.equals("1"))
-                        jsonobj.put("location", "KT");
-                    else if (location.equals("1"))
-                        jsonobj.put("location", "ID");
-                    else if (location.equals("1"))
-                        jsonobj.put("location", "ER");
-                    else if (location.equals("1"))
-                        jsonobj.put("location", "TS");
-                    else if (location.equals("1"))
-                        jsonobj.put("location", "PL");
-                    else if (location.equals("1"))
-                        jsonobj.put("location", "MA");
-                    else if (location.equals("1"))
-                        jsonobj.put("location", "KZ");
-                    else if (location.equals("1"))
-                        jsonobj.put("location", "WA");
-                    else if (location.equals("1"))
-                        jsonobj.put("location", "KN");
-                    else if (location.equals("1"))
-                        jsonobj.put("location", "KS");
-                }catch(JSONException e){}
-                tts.speak("Press 1 for low volume, press 2 for high volume followed by #", TextToSpeech.QUEUE_FLUSH,null);
-                volume=String.valueOf(input());
-                try {
-                    jsonobj.put("volume", volume);
-                    JSONObject j = HttpClient.SendHttpPost(URL,jsonobj);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if(mainoption==2){
-                while(jsonobj.length()>0)
-                    jsonobj.remove(jsonobj.keys().next());
-                try {
-                    jsonobj.put("label","status");
-                    jsonobj.put("number",phoneno);
-                    JSONObject j = HttpClient.SendHttpPost(URL,jsonobj);
-                    if(j.getString("status").equals("yes")){
-                        tts.speak("Press 1 to be inactive followed by #", TextToSpeech.QUEUE_FLUSH,null);
-                        int newstatus=input();
-                        while(jsonobj.length()>0)
-                            jsonobj.remove(jsonobj.keys().next());
-                        if(newstatus==1) {
-                            jsonobj.put("label", "setstatus");
-                            jsonobj.put("status", "no");
-                        }
-
-                    }
-                    else{
-                        tts.speak("Press 1 to be active followed by #", TextToSpeech.QUEUE_FLUSH,null);
-                        int newstatus=input();
-                        while(jsonobj.length()>0)
-                            jsonobj.remove(jsonobj.keys().next());
-                        jsonobj.put("label","setstatus");
-                        jsonobj.put("status","yes");
-
-                    }
-                    j = HttpClient.SendHttpPost(URL,jsonobj);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            else{
-                tts.speak("Press 1 if satisfied, press 2 else followed by #", TextToSpeech.QUEUE_FLUSH,null);
-                int satisfaction=input();
-                JSONObject json=new JSONObject();
-                try {
-                    json.put("label","feedback");
-                    json.put("feedback",satisfaction);
-                    JSONObject j = HttpClient.SendHttpPost(URL,json);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-        }
-
-
-    }
-
 
 
 
@@ -352,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return  6;
+            return  name1.length;
         }
 
         @Override
@@ -369,9 +244,9 @@ public class MainActivity extends AppCompatActivity {
         public View getView(final int i, View view, ViewGroup parent) {
             view = getLayoutInflater().inflate(R.layout.custom_call, null);
             TextView textView_name = (TextView) view.findViewById(R.id.textView_name);
-            TextView textView_provider = (TextView) view.findViewById(R.id.textView_provider);
+
             textView_name.setText(name1[i]);
-            textView_provider.setText(provider1[i]);
+
             return view;
 
         }
