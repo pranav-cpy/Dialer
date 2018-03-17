@@ -92,7 +92,9 @@
             android:layout_marginTop="4dp"
             android:padding="5dp"
             android:background="#ffffff"
-            android:src="@drawable/back"/>
+            android:clickable="true"
+            android:src="@drawable/back"
+            android:id="@+id/back" />
 
     </LinearLayout>
     <view
