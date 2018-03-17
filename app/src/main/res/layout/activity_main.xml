@@ -233,7 +233,7 @@
             android:textColor="#00808b"
             android:textSize="35dp"
             android:layout_weight=".33"
-             />
+            android:id="@+id/change" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -241,7 +241,8 @@
             android:layout_weight=".33"
             android:textSize="27dp"
             android:textColor="#00808b"
-            android:text="0"/>
+            android:text="0"
+            android:id="@+id/no0" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -275,7 +276,7 @@
             android:layout_weight=".33"
             android:scaleType="fitCenter"
             android:src="@drawable/call"
-            />
+            android:id="@+id/call" />
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
